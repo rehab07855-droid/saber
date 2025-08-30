@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rahab — موقع رحاب لتكنولوجيا المعلومات</title>
+    <meta name="description" content="موقع رحاب لشرح مواد التخصص لتكنولوجيا المعلومات: أمن سيبراني، إدارة الحوادث، إدارة المشاريع، البرمجة، ومقدمة في الذكاء الاصطناعي.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #ffffff;
+            /* أبيض */
+            --ink: #2b2730;
+            /* نص */
+            --muted: #6b6b7a;
+            /* نص ثانوي */
+            --pink: #ff77b7;
+            /* وردي أساسي */
+            --pink-soft: #ffd2ea;
+            /* وردي فاتح */
+            --lav: #e9e2ff;
+            /* نهدي فاتح */
+            --lav-strong: #c8b7ff;
+            /* نهدي أوضح */
+            --card: #ffffff;
+            /* خلفية البطاقات */
+            --ring: 0 0 0 6px rgba(255, 119, 183, .14);
+            --shadow: 0 20px 60px rgba(60, 16, 83, .12);
+            --radius: 22px;
+        }
+        
+        [data-theme="dark"] {
+            --bg: #131218;
+            --ink: #f4f1f7;
+            --muted: #b7b3c3;
+            --card: #1c1a22;
+            --shadow: 0 30px 70px rgba(0, 0, 0, .55);
+        }
+        
+        * {
+            box-sizing: border-box
+        }
+        
+        html,
+        body {
+            height: 100%
+        }
+        
+        body {
+            margin: 0;
+            font-family: "Cairo", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background: radial-gradient(1200px 900px at 15% -10%, var(--lav) 0%, transparent 40%), radial-gradient(1200px 900px at 85% 110%, var(--pink-soft) 0%, transparent 40%), var(--bg);
+            overflow-x: hidden;
+            transition: background .5s ease, color .4s ease;
+        }
+        /* شاشة البداية بدائرة أنيقة */
+        
+        .gate {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            z-index: 50;
+            background: radial-gradient(1400px 1000px at 50% 50%, var(--lav) 0%, var(--bg) 60%);
+            transition: clip-path 1s cubic-bezier(.22, 1, .36, 1), opacity .45s ease .35s;
+            clip-path: circle(120px at 50% 50%);
+        }
+        
+        .open .gate {
+            clip-path: circle(0px at var(--cx, 50%) var(--cy, 50%));
+            opacity: 0;
+            pointer-events: none
+        }
+        
+        .circle-btn {
+            --size: 160px;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: radial-gradient(100% 100% at 30% 30%, #fff 0%, rgba(255, 255, 255, .6) 35%, rgba(255, 255, 255, 0) 75%), conic-gradient(from 210deg, var(--lav-strong), var(--pink), #ff4fa1, var(--lav-strong));
+            box-shadow: 0 18px 40px rgba(255, 119, 183, .35), inset 0 6px 14px rgba(255, 255, 255, .7);
+            display: grid;
+            place-items: center;
+            transition: transform .2s ease;
+            isolation: isolate;
+        }
+        
+        .circle-btn:hover {
+            transform: translateY(-4px) scale(1.03)
+        }
+        
+        .circle-btn:active {
+            transform: scale(.98)
+        }
+        
+        .circle-btn .label {
+            font-weight: 800;
+            color: #5b2b3a;
+            text-align: center
+        }
+        /* الهيدر */
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, .65);
+            border-bottom: 1px solid #efe6ff;
+            transition: background .4s ease
+        }
+        
+        [data-theme="dark"] header {
+            background: rgba(19, 18, 24, .6);
+            border-bottom: 1px solid #2a2834
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 18px
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 900
+        }
+        
+        .brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .12)
+        }
+        
+        .brand .name {
+            font-size: 22px;
+            background: linear-gradient(90deg, var(--pink), var(--lav-strong));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+        
+        .btn {
+            border: none;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 800;
+            background: linear-gradient(180deg, var(--lav), #fff);
+            color: #4b2d6f;
+            box-shadow: var(--shadow)
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px)
+        }
+        
+        .btn.primary {
+            background: linear-gradient(180deg, var(--pink), #ff4fa1);
+            color: #fff
+        }
+        
+        .icon-btn {
+            padding: 8px 12px
+        }
+        /* البطل */
+        
+        .hero {
+            padding: 46px 0 20px;
+            text-align: center
+        }
+        
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(26px, 5vw, 44px)
+        }
+        
+        .hero p {
+            color: var(--muted);
+            margin: 12px auto 0;
+            max-width: 720px
+        }
+        
+        .pill {
+            display: inline-block;
+            margin: 14px auto 0;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--pink-soft), var(--lav));
+            color: #4b2d6f;
+            box-shadow: var(--shadow)
+        }
+        /* أقسام */
+        
+        section {
+            scroll-margin-top: 90px
+        }
+        /* بطاقات الدروس — 3D + رموز */
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 18px;
+            padding: 30px 0
+        }
+        
+        .card {
+            grid-column: span 6;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 18px 18px 22px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(200, 183, 255, .45);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform .2s ease, box-shadow .2s ease, background .4s ease
+        }
+        
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .18)
+        }
+        
+        .card .row {
+            display: flex;
+            align-items: center;
+            gap: 14px
+        }
+        
+        .badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--lav);
+            color: #4b2d6f;
+            font-weight: 800;
+            font-size: 12px
+        }
+        
+        .icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(100% 100% at 30% 30%, #fff 0%, rgba(255, 255, 255, .6) 50%, rgba(255, 255, 255, 0) 80%), linear-gradient(135deg, var(--pink-soft), #fff);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 10px 20px rgba(255, 119, 183, .18);
+            transform: translateZ(24px)
+        }
+        
+        .card h3 {
+            margin: 10px 0 6px;
+            font-size: 20px
+        }
+        
+        .card p {
+            margin: 0;
+            color: var(--muted)
+        }
+        /* جدول دراسي عصري */
+        
+        .table-wrap {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(200, 183, 255, .45);
+            box-shadow: var(--shadow);
+            overflow: hidden
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+        
+        th,
+        td {
+            padding: 14px 12px;
+            text-align: center
+        }
+        
+        thead th {
+            background: linear-gradient(90deg, var(--lav), var(--pink-soft));
+            color: #4b2d6f
+        }
+        
+        tbody tr {
+            border-top: 1px solid #efe6ff
+        }
+        
+        tbody tr:hover {
+            background: rgba(255, 119, 183, .06)
+        }
+        /* لمحة عني */
+        
+        .about {
+            background: linear-gradient(180deg, rgba(255, 210, 234, .35), rgba(233, 226, 255, .4));
+            border: 1px solid rgba(200, 183, 255, .5);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow)
+        }
+        /* الدعاء — بروشور متوهّج */
+        
+        .dua {
+            margin: 24px auto;
+            max-width: 900px;
+            padding: 18px 18px;
+            text-align: center;
+            position: relative;
+            border-radius: 26px;
+            color: #5b2b6f;
+            font-weight: 800;
+            font-size: clamp(16px, 2.4vw, 22px);
+            background: linear-gradient(125deg, #fff, var(--pink-soft) 40%, var(--lav));
+            box-shadow: 0 12px 40px rgba(255, 119, 183, .18), inset 0 1px 0 rgba(255, 255, 255, .9);
+        }
+        
+        .dua::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 28px;
+            pointer-events: none;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 119, 183, .5), transparent, rgba(200, 183, 255, .6), transparent);
+            filter: blur(10px);
+            opacity: .75;
+            mix-blend-mode: screen;
+            animation: glow 6s linear infinite
+        }
+        
+        @keyframes glow {
+            0% {
+                transform: rotate(0)
+            }
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+        /* تواصل */
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+        
+        input,
+        textarea {
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid #e9e2ff;
+            background: #fff;
+            color: #4b2d6f
+        }
+        
+        textarea {
+            min-height: 110px
+        }
+        
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+        
+        @media (max-width: 800px) {
+            .card {
+                grid-column: span 12
+            }
+            .split {
+                grid-template-columns: 1fr
+            }
+        }
+        
+        footer {
+            margin-top: 34px;
+            padding: 20px 0;
+            text-align: center;
+            color: var(--muted)
+        }
+    </style>
+</head>
+
+<body>
+    <!-- شاشة البداية بالدائرة -->
+    <div class="gate" aria-hidden="false">
+        <button id="openBtn" class="circle-btn" aria-label="اضغطي للفتح">
+      <div class="label">
+        <div style="font-size:20px">اضغطي للفتح</div>
+        <div style="font-size:12px;opacity:.9">رسالة لطيفة تفتح عالم رحاب</div>
+      </div>
+    </button>
+    </div>
+
+    <!-- رأس الموقع -->
+    <header>
+        <div class="container nav">
+            <div class="brand">
+                <!-- بدّلي src بالصورة التي ستمدّينني بها -->
+                <img id="logo" src="png.png" alt="شعار رحاب" />
+                <span class="name">Rahab</span>
+            </div>
+            <nav class="actions">
+                <a class="btn icon-btn" href="#lessons">الدروس</a>
+                <a class="btn icon-btn" href="#schedule">الجدول</a>
+                <a class="btn icon-btn" href="#contact">تواصل</a>
+                <button id="toggleTheme" class="btn" title="الوضع الليلي">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- بطل الصفحة -->
+    <main class="container">
+        <section class="hero">
+            <span class="pill">مدرستي: الجفر الثانوية للبنات</span>
+            <h1>مرحباً في موقع <strong>رحاب</strong> لشرح مواد التخصص لتكنولوجيا المعلومات</h1>
+            <p>موقع شخصي بسيط وواضح — صممته الطالبة <strong>رحاب</strong> بحب، ليكون مرجعًا أنيقًا ومنظمًا لدروس أمن المعلومات، المشاريع، البرمجة والذكاء الاصطناعي.</p>
+        </section>
+
+        <!-- الدروس -->
+        <section id="lessons" class="grid">
+            <!-- أمن سيبراني وإدارة الحوادث -->
+            <article class="card tilt" data-badge="أمن سيبراني">
+                <a href="sapr.html" target="_blank">▶️</a>
+                <div class="row">
+                    <div class="icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2l7 3v5c0 5-3.5 9-7 12-3.5-3-7-7-7-12V5l7-3z" stroke="#a68cff" stroke-width="2"/>
+              <path d="M9 12h6M9 15h3" stroke="#ff77b7" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+                    </div>
+                    <div>
+                        <span class="badge">أمن سيبراني وإدارة الحوادث</span>
+                        <h3>مفاهيم الحماية وخطط الاستجابة</h3>
+                        <p>أساسيات الأمن، التهديدات، وإجراءات الاستجابة للحوادث لبيئة أكثر أمانًا.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- إدارة المشاريع -->
+            <article class="card tilt" data-badge="إدارة المشاريع">
+                <div class="row">
+                    <div class="icon" aria-hidden="true">📊</div>
+                    <div>
+                        <span class="badge">إدارة المشاريع</span>
+                        <h3>من الفكرة إلى التسليم</h3>
+                        <p>النطاق، الجدول، الموارد، والمخاطر — كيف تخطط وتنفّذ وتراقب بنجاح.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- البرمجة -->
+            <article class="card tilt" data-badge="البرمجة">
+                <div class="row">
+                    <div class="icon" aria-hidden="true">💻</div>
+                    <div>
+                        <span class="badge">البرمجة</span>
+                        <h3>منطق، تراكيب، ومشاريع صغيرة</h3>
+                        <p>مبادئ كتابة الشيفرة وبناء حلول عملية بخطوات واضحة وممتعة.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- مقدمة في الذكاء الاصطناعي -->
+            <article class="card tilt" data-badge="ذكاء اصطناعي">
+                <a href="ai.html" target="_blank">▶️</a>
+                <div class="row">
+                    <div class="icon" aria-hidden="true">🤖</div>
+                    <div>
+                        <span class="badge">مقدمة في الذكاء الاصطناعي</span>
+                        <h3>الأفكار التي تدير العالم الذكي</h3>
+                        <p>مفاهيم التعلم الآلي والذكاء الاصطناعي وتطبيقاتها اليومية ببساطة.</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- الجدول الدراسي -->
+        <section id="schedule">
+            <h2 style="margin:0 0 12px">الجدول الدراسي</h2>
+            <div class="table-wrap">
+                <table aria-label="جدول رحاب الدراسي">
+                    <thead>
+                        <tr>
+                            <th>اليوم</th>
+                            <th>المادة</th>
+                            <th>الوقت</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>الأحد</td>
+                            <td>أمن سيبراني</td>
+                            <td>9:00 – 10:30</td>
+                        </tr>
+                        <tr>
+                            <td>الإثنين</td>
+                            <td>إدارة المشاريع</td>
+                            <td>11:00 – 12:30</td>
+                        </tr>
+                        <tr>
+                            <td>الثلاثاء</td>
+                            <td>البرمجة</td>
+                            <td>9:00 – 10:30</td>
+                        </tr>
+                        <tr>
+                            <td>الأربعاء</td>
+                            <td>مقدمة في الذكاء الاصطناعي</td>
+                            <td>11:00 – 12:30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- لمحة عني -->
+        <section style="padding-top:26px">
+            <div class="about">
+                <h3 style="margin:0 0 8px">لمحة عني</h3>
+                <p style="margin:0">عمل هذا الموقع من قبل الطالبة <strong>رحاب</strong> خصيصًا لموادها الدراسية في تكنولوجيا المعلومات، ليكون مرجعًا مرتبًا وواضحًا لها ولزميلاتها.</p>
+            </div>
+        </section>
+
+        <!-- الدعاء -->
+        <section>
+            <div class="dua" aria-label="دعاء">
+                رَبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ وَاجْعَلْ لِي مِن لَدُنكَ نَصِيرًا
+            </div>
+        </section>
+
+        <!-- تواصل -->
+        <section id="contact" style="padding: 6px 0 8px">
+            <h2 style="margin:0 0 12px">تواصل معي</h2>
+            <div class="grid" style="padding-top:0">
+                <div class="card" style="grid-column: span 6">
+                    <form onsubmit="event.preventDefault(); alert('تم إرسال الرسالة بنجاح ✨'); this.reset();">
+                        <div class="split">
+                            <input type="text" placeholder="الاسم" required>
+                            <input type="email" placeholder="البريد الإلكتروني" required>
+                        </div>
+                        <textarea placeholder="رسالتك" required></textarea>
+                        <button class="btn primary" type="submit">إرسال</button>
+                    </form>
+                </div>
+                <div class="card" style="grid-column: span 6">
+                    <h3 style="margin:0 0 10px">معلومات التواصل</h3>
+                    <p style="margin:0 0 8px">📧 البريد: <strong id="email">rehab07855@gmail.com</strong></p>
+                    <p style="margin:0 0 8px">📱 الهاتف: <strong id="phone">0790879381</strong></p>
+                    <p style="margin:0">📍 المدرسة: <strong>الجفر الثانوية للبنات</strong></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">© جميع الحقوق محفوظة باسم <strong>رحاب سعد أبو تايه</strong> — 2025</div>
+    </footer>
+
+    <script>
+        // فتح البوابة بالدائرة
+        const root = document.documentElement;
+        const gate = document.querySelector('.gate');
+        document.getElementById('openBtn').addEventListener('click', (e) => {
+            const r = gate.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width * 100).toFixed(2) + "%";
+            const y = ((e.clientY - r.top) / r.height * 100).toFixed(2) + "%";
+            root.style.setProperty('--cx', x);
+            root.style.setProperty('--cy', y);
+            document.body.classList.add('open');
+            setTimeout(() => gate.style.display = 'none', 900);
+        });
+
+        // تبديل الوضع الليلي
+        const toggleTheme = document.getElementById('toggleTheme');
+        toggleTheme.addEventListener('click', () => {
+            if (root.getAttribute('data-theme') === 'dark') {
+                root.removeAttribute('data-theme');
+                toggleTheme.textContent = '🌙';
+            } else {
+                root.setAttribute('data-theme', 'dark');
+                toggleTheme.textContent = '☀️';
+            }
+        });
+
+        // تأثير الميلان (Tilt) على البطاقات
+        const cards = [...document.querySelectorAll('.tilt')];
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const r = card.getBoundingClientRect();
+                const x = e.clientX - r.left;
+                const y = e.clientY - r.top;
+                const rotY = ((x / r.width) - .5) * 10; // يمين/يسار
+                const rotX = -((y / r.height) - .5) * 10; // أعلى/أسفل
+                card.style.transform = `translateY(-6px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // أنيميشن ظهور عند التمرير
+        const revealEls = document.querySelectorAll('.card, .about, .table-wrap, .dua');
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    en.target.style.animation = 'rise .7s ease forwards';
+                    io.unobserve(en.target);
+                }
+            })
+        }, {
+            threshold: .12
+        });
+        revealEls.forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(16px)';
+            io.observe(el);
+        });
+        const style = document.createElement('style');
+        style.textContent = '@keyframes rise{to{opacity:1; transform:translateY(0)}}';
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
